@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { connectContract, connectReadOnlyContract } from "../utils/contract";
+import { connectReadOnlyContract } from "../utils/contract";
 import { Html5Qrcode } from "html5-qrcode";
 import { Link, useParams} from "react-router-dom";
 import { useEffect } from "react";
