@@ -39,32 +39,34 @@ function ConsumerPage() {
 
   const startScanner = async () => {
 
-    try {
-
       setVerificationResult("");
       setProductInfo(null);
 
-      const html5QrCode =
-        new Html5Qrcode("reader");
-      setScanner(html5QrCode);
-
       setIsScanning(true);
 
-      await html5QrCode.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: 250
-        },
+      setTimeout(async () => {
 
-        async (decodedText) => {
+        try {
+
+          const html5QrCode =
+            new Html5Qrcode("reader");
+
+          setScanner(html5QrCode);
+
+          await html5QrCode.start(
+            { facingMode: "environment" },
+            {
+              fps: 10,
+              qrbox: 250
+            },
+
+          async (decodedText) => {
 
           try {
 
             await html5QrCode.stop();
 
             setScanner(null);
-
             setIsScanning(false);
 
             let productId;
@@ -74,14 +76,11 @@ function ConsumerPage() {
               decodedText.includes("/verify/")
             ) {
 
-            const parts =
-              decodedText.split("/");
+            const parts = decodedText.split("/");
 
-            productId =
-              parts[parts.length - 2];
+            productId = parts[parts.length - 2];
 
-            batchNumber =
-              parts[parts.length - 1];
+            batchNumber = parts[parts.length - 1];
 
             } else {
 
@@ -126,17 +125,9 @@ function ConsumerPage() {
           setProductInfo(null);
         }
 
-
           } catch (error) {
 
-            console.error(
-              "Verification Error:",
-              error
-          );
-
-            alert(
-              error.message
-            );
+            console.error( error);
 
             setVerificationResult(
               "VERIFICATION FAILED"
@@ -144,34 +135,36 @@ function ConsumerPage() {
           }
         },
 
-        (errorMessage) => {}
-      );
+        () => {}
+        );
 
-    } catch (error) {
+      } catch (error) {
 
-      console.error(error);
+        console.error(error);
 
-      setVerificationResult(
-        "CAMERA ACCESS FAILED"
-      );
-    }
-};
+        setVerificationResult(
+          "CAMERA ACCESS FAILED"
+        );
+      }
 
-const reportProduct = async () => {
+    }, 100);
+  };
 
-  if (
-    !scannedProductId ||
-    !scannedBatchNumber
-  ) {
+    const reportProduct = async () => {
 
-    alert(
-      "Please scan a product first."
-    );
+      if (
+        !scannedProductId ||
+        !scannedBatchNumber
+      ) {
 
-    return;
-  }
+        alert(
+          "Please scan a product first."
+        );
 
-  try {
+        return;
+      }
+
+      try {
 
     const response =
       await axios.post(
@@ -259,6 +252,9 @@ useEffect(() => {
           );
 
         setProductInfo(product);
+
+        setScannedProductId(urlProductId);
+        setScannedBatchNumber(urlBatchNumber);
 
         setVerificationResult(
           "GENUINE PRODUCT"
@@ -348,15 +344,6 @@ return (
 
   {isScanning && (
 
-    <div
-      id="reader"
-      className="mx-auto mt-3"
-    ></div>
-
-  )}
-
-      {isScanning && (
-
         <div className="alert alert-info text-center">
 
           📷 Camera is scanning QR code...
@@ -364,6 +351,15 @@ return (
         </div>
 
       )}
+
+  {isScanning && (
+
+    <div
+      id="reader"
+      className="mx-auto mt-3"
+    ></div>
+
+  )}
 
     </div>
 
@@ -484,7 +480,7 @@ return (
     )}
 
     <button
-        className="btn btn-secondary mt-4"
+        className="btn btn-secondary mt-2"
         onClick={() =>
           setShowReport(
             !showReport
@@ -569,5 +565,4 @@ return (
 );
 
 }
-
 export default ConsumerPage;
