@@ -6,7 +6,9 @@ import { Link, useParams} from "react-router-dom";
 import { useEffect } from "react";
 
 function ConsumerPage() {
-
+  
+  alert("ConsumerPage Loaded");
+  
   console.log("VERSION 123");
 
   const [verificationResult, setVerificationResult] =
