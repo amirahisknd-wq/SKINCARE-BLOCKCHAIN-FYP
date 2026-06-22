@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 function ConsumerPage() {
   
-  alert("ConsumerPage Loaded");
+  alert("Consumer Page");
   
   console.log("VERSION 123");
 
