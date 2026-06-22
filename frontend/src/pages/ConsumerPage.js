@@ -246,12 +246,28 @@ useEffect(() => {
         decodeURIComponent(urlBatchNumber)
           .trim()
           .toUpperCase();
+        
+      console.log("Product ID:", productId);
+console.log("Batch Number:", batchNumber);
+
+const total =
+  await contract.getTotalProducts();
+
+console.log(
+  "Total Products:",
+  Number(total)
+);
 
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
+
+      console.log(
+  "Verified:",
+  verified
+);
 
       if (verified) {
 
