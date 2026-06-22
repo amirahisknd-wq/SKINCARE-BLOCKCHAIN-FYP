@@ -6,11 +6,8 @@ import { Link, useParams} from "react-router-dom";
 import { useEffect } from "react";
 
 function ConsumerPage() {
-  
-  alert("Consumer Page");
-  
-  console.log("VERSION 123");
 
+  
   const [verificationResult, setVerificationResult] =
     useState("");
 
@@ -228,26 +225,17 @@ useEffect(() => {
 
   const verifyFromUrl = async () => {
 
-    if (!urlProductId ||!urlBatchNumber) {
+    if (
+      !urlProductId ||
+      !urlBatchNumber
+    ) {
       return;
     }
 
-    console.log("verifyFromUrl running");
-console.log("urlProductId =", urlProductId);
-console.log("urlBatchNumber =", urlBatchNumber);
-
-const productId = decodeURIComponent(urlProductId)
-  .trim()
-  .toUpperCase();
-
-const batchNumber = decodeURIComponent(urlBatchNumber)
-  .trim()
-  .toUpperCase();
-
-console.log("productId =", productId);
-console.log("batchNumber =", batchNumber);
-
     try {
+
+      const contract =
+        await connectReadOnlyContract();
 
       const productId =
         decodeURIComponent(urlProductId)
@@ -259,20 +247,11 @@ console.log("batchNumber =", batchNumber);
           .trim()
           .toUpperCase();
 
-      const contract =
-        await connectReadOnlyContract();
-
-      const total = await contract.getTotalProducts();
-
-console.log("TOTAL PRODUCTS =", Number(total));
-
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
-
-        console.log("VERIFIED =", verified);
 
       if (verified) {
 
@@ -284,8 +263,8 @@ console.log("TOTAL PRODUCTS =", Number(total));
 
         setProductInfo(product);
 
-        setScannedProductId(productId);
-        setScannedBatchNumber(batchNumber);
+        setScannedProductId(urlProductId);
+        setScannedBatchNumber(urlBatchNumber);
 
         setVerificationResult(
           "GENUINE PRODUCT"
@@ -298,7 +277,6 @@ console.log("TOTAL PRODUCTS =", Number(total));
         );
 
         setProductInfo(null);
-
       }
 
     } catch (error) {
@@ -308,9 +286,7 @@ console.log("TOTAL PRODUCTS =", Number(total));
       setVerificationResult(
         "VERIFICATION FAILED"
       );
-
     }
-
   };
 
   verifyFromUrl();
