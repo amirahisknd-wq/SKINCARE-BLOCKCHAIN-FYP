@@ -8,7 +8,7 @@ import { useEffect } from "react";
 function ConsumerPage() {
 
   console.log("VERSION 123");
-  
+
   const [verificationResult, setVerificationResult] =
     useState("");
 
@@ -226,12 +226,24 @@ useEffect(() => {
 
   const verifyFromUrl = async () => {
 
-    if (
-      !urlProductId ||
-      !urlBatchNumber
-    ) {
+    if (!urlProductId ||!urlBatchNumber) {
       return;
     }
+
+    console.log("verifyFromUrl running");
+console.log("urlProductId =", urlProductId);
+console.log("urlBatchNumber =", urlBatchNumber);
+
+const productId = decodeURIComponent(urlProductId)
+  .trim()
+  .toUpperCase();
+
+const batchNumber = decodeURIComponent(urlBatchNumber)
+  .trim()
+  .toUpperCase();
+
+console.log("productId =", productId);
+console.log("batchNumber =", batchNumber);
 
     try {
 
@@ -248,11 +260,17 @@ useEffect(() => {
       const contract =
         await connectReadOnlyContract();
 
+      const total = await contract.getTotalProducts();
+
+console.log("TOTAL PRODUCTS =", Number(total));
+
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
+
+        console.log("VERIFIED =", verified);
 
       if (verified) {
 
