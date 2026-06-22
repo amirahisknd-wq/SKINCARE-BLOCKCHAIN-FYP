@@ -234,9 +234,6 @@ useEffect(() => {
 
     try {
 
-      const contract =
-        await connectReadOnlyContract();
-
       const productId =
         decodeURIComponent(urlProductId)
           .trim()
@@ -246,28 +243,15 @@ useEffect(() => {
         decodeURIComponent(urlBatchNumber)
           .trim()
           .toUpperCase();
-        
-      console.log("Product ID:", productId);
-console.log("Batch Number:", batchNumber);
 
-const total =
-  await contract.getTotalProducts();
-
-console.log(
-  "Total Products:",
-  Number(total)
-);
+      const contract =
+        await connectReadOnlyContract();
 
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
-
-      console.log(
-  "Verified:",
-  verified
-);
 
       if (verified) {
 
@@ -279,8 +263,8 @@ console.log(
 
         setProductInfo(product);
 
-        setScannedProductId(urlProductId);
-        setScannedBatchNumber(urlBatchNumber);
+        setScannedProductId(productId);
+        setScannedBatchNumber(batchNumber);
 
         setVerificationResult(
           "GENUINE PRODUCT"
@@ -293,6 +277,7 @@ console.log(
         );
 
         setProductInfo(null);
+
       }
 
     } catch (error) {
@@ -302,7 +287,9 @@ console.log(
       setVerificationResult(
         "VERIFICATION FAILED"
       );
+
     }
+
   };
 
   verifyFromUrl();
