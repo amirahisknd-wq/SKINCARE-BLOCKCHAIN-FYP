@@ -499,8 +499,8 @@ return (
         }
       >
         {showReport
-          ? "Report Form"
-          : "Hide Report Form"}
+          ? "Hide Report Form"
+          : "Report Form"}
       </button>
 
       {showReport && (
