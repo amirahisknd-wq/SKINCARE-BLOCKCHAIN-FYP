@@ -167,7 +167,7 @@ function ConsumerPage() {
 
     const response =
       await axios.post(
-        "http://localhost:5000/report-product",
+        `${process.env.REACT_APP_API_URL}/report-product`,
         {
           productId:
             scannedProductId,
@@ -251,6 +251,10 @@ useEffect(() => {
           productId,
           batchNumber
         );
+
+      console.log("Product ID:", productId);
+console.log("Batch Number:", batchNumber);
+console.log("Verified:", verified);
 
       if (verified) {
 
