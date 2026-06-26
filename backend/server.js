@@ -9,11 +9,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log("DB_HOST =", process.env.DB_HOST);
+console.log("DB_PORT =", process.env.DB_PORT);
+console.log("DB_NAME =", process.env.DB_NAME);
+
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "skincare_system"
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "skincare_system",
+  port: process.env.DB_PORT || 3306
 });
 
 db.connect((err) => {
@@ -211,9 +216,8 @@ app.post( "/register-retailer", (req, res) => {
   }
 );
 
-app.listen(5000, () => {
+const PORT = process.env.PORT || 5000;
 
-  console.log(
-    "Server Running on Port 5000"
-  );
+app.listen(PORT, () => {
+  console.log(`Server Running on Port ${PORT}`);
 });
