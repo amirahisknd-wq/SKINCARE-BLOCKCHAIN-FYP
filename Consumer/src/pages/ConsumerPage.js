@@ -325,7 +325,7 @@ return (
           color: "#E08CA0"
         }}
       >
-        Consumer Verification TEST 123
+        Consumer Verification
       </h2>
 
       <p className="text-center text-muted">
