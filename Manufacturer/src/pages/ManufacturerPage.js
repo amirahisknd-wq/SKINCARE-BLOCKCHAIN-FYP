@@ -4,6 +4,8 @@ import { QRCodeCanvas } from "qrcode.react";
 import {Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { Html5Qrcode } from "html5-qrcode";
+import jsPDF from "jspdf";
+import QRCode from "qrcode";
 
 function ManufacturerPage() {
 
@@ -565,42 +567,183 @@ setRetailerPassword("");
 
   };
 
-  const downloadQR = (
-  index,
-  productId
-) => {
+  const downloadCertificate = async (product) => {
 
-  const canvas =
-    document.getElementById(
-      `qr-${index}`
+  try {
+
+    const qrData = `https://skincare-blockchain-fyp.vercel.app/verify/${product[0]}/${product[2]}`;
+
+    const qrImage = await QRCode.toDataURL(qrData, {
+      width: 300,
+      margin: 2
+    });
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // ===== Border =====
+    pdf.setDrawColor(233, 147, 166);
+    pdf.setLineWidth(0.5);
+    pdf.rect(10, 10, 190, 277);
+
+    // ===== Title =====
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(22);
+
+    pdf.setTextColor(224, 140, 160);
+
+    pdf.text(
+      "BLOCKCHAIN PRODUCT",
+      105,
+      25,
+      { align: "center" }
     );
 
-  const pngUrl =
-    canvas
-      .toDataURL("image/png")
-      .replace(
-        "image/png",
-        "image/octet-stream"
-      );
+    pdf.text(
+      "REGISTRATION CERTIFICATE",
+      105,
+      35,
+      { align: "center" }
+    );
 
-  const downloadLink =
-    document.createElement("a");
+    // Divider
+    pdf.setDrawColor(224, 140, 160);
 
-  downloadLink.href =
-    pngUrl;
+    pdf.line(
+      20,
+      42,
+      190,
+      42
+    );
 
-  downloadLink.download =
-    `${productId}-QR.png`;
+    // ===== QR =====
+    pdf.addImage(
+      qrImage,
+      "PNG",
+      70,
+      48,
+      66,
+      66
+    );
 
-  document.body.appendChild(
-    downloadLink
-  );
+    // ===== Product Information =====
 
-  downloadLink.click();
+    let y = 123;
 
-  document.body.removeChild(
-    downloadLink
-  );
+    // Section Heading
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(13);
+    pdf.setTextColor(224, 140, 160);
+
+    pdf.text("Product Information", 20, y);
+
+    y += 5;
+
+    // Divider
+    pdf.setDrawColor(224, 140, 160);
+    pdf.setLineWidth(0.3);
+    pdf.line(20, y - 4, 190, y - 4);
+
+    // Reset font
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(12);
+    pdf.setTextColor(0, 0, 0);
+
+    // Labels and Values
+    y += 9;
+
+    const info = [
+      ["Product ID", product[0]],
+      ["Product Name", product[1]],
+      ["Batch Number", product[2]],
+      ["Manufacturing Date", product[3]],
+      ["Manufacturer", product[4]],
+      ["NPRA Registration Number", product[5]]
+    ];
+
+    info.forEach(([label, value]) => {
+
+      pdf.setFont("helvetica", "bold");
+      pdf.text(`${label}:`, 20, y);
+
+      pdf.setFont("helvetica", "normal");
+      const labelX = 20;
+      const colonX = 78;
+      const valueX = 85;
+
+      pdf.setFont("helvetica", "bold");
+      pdf.text(label, labelX, y);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(":", colonX, y);
+
+      pdf.text(String(value), valueX, y);
+
+      y += 11;
+
+    });
+
+    // ===== Blockchain Status =====
+
+    y += 5;
+
+    pdf.setFillColor(232, 245, 233);
+    pdf.roundedRect(20, y - 5, 170, 12, 3, 3, "F");
+
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(13);
+    pdf.setTextColor(34, 139, 34);
+
+    pdf.text(
+      "Successfully Registered on Blockchain",
+      25,
+      y + 3
+    );
+
+    pdf.setTextColor(0, 0, 0);
+
+    // ===== Footer =====
+
+    y += 20;
+
+    pdf.setDrawColor(224, 140, 160);
+    pdf.line(20, y, 190, y);
+
+    y += 10;
+
+    pdf.setFont("helvetica", "italic");
+    pdf.setFontSize(10);
+
+    pdf.setTextColor(120, 120, 120);
+
+    y += 10;
+
+    pdf.setFont("helvetica", "italic");
+    pdf.setFontSize(8);
+
+    pdf.text(
+      `Certificate Generated: ${new Date().toLocaleDateString()}`,
+      20,
+      y
+    );
+
+    pdf.text(
+      "Blockchain-Based Skincare Product Identification System",
+      55,
+      y + 5,
+      {
+        align: "center"
+      }
+    );
+    pdf.save(`${product[0]}-Certificate.pdf`);
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Failed to generate PDF.");
+
+  }
+
 };
 
 const manufacturer =
@@ -642,7 +785,6 @@ const manufacturer =
     </div>
 
         <h2
-
           
           className="text-center mb-4"
           style={{
@@ -943,11 +1085,8 @@ const manufacturer =
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={() =>
-                          downloadQR(
-                            index,
-                            product[0]
-                        )
-                      }
+                          downloadCertificate(product)
+                        }
                       >
                         Download
                       </button>
