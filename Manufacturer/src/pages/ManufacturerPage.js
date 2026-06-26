@@ -16,6 +16,8 @@ function ManufacturerPage() {
     npraRegistrationNumber: ""
   });
 
+  const [registeredProduct, setRegisteredProduct] = useState(null);
+
   const navigate = useNavigate();
 
   const [qrData, setQrData] = useState("");
@@ -136,7 +138,13 @@ function ManufacturerPage() {
 
       await tx.wait();
 
-      console.log("Product registered:");
+      setRegisteredProduct({
+        productId: formData.productId,
+        batchNumber: formData.batchNumber,
+        productName: formData.productName,
+        manufacturerName: formData.manufacturerName,
+        npraRegistrationNumber: formData.npraRegistrationNumber
+      });
 
       const qrContent =
         `https://skincare-blockchain-fyp.vercel.app/verify/${formData.productId}/${formData.batchNumber}`;
@@ -145,6 +153,15 @@ function ManufacturerPage() {
       setSuccessMessage(
         "✅ Product successfully registered on blockchain."
       );
+
+      setFormData({
+        productId: "",
+        productName: "",
+        batchNumber: "",
+        manufacturingDate: "",
+        manufacturerName: "",
+        npraRegistrationNumber: ""
+      });
 
     } catch (error) {
 
@@ -198,9 +215,6 @@ function ManufacturerPage() {
   };
 
   const addRetailer = async () => {
-    
-
-    console.log(retailerData);
 
     if (
       !retailerData.retailerId ||
@@ -217,16 +231,6 @@ function ManufacturerPage() {
 
       const contract =
         await connectContract();
-
-      console.log(
-        "addRetailer:",
-        typeof contract.addRetailer
-      );
-
-      console.log(
-        contract.interface.fragments
-          .map(f => f.name)
-      );
 
       const tx =
         await contract.addRetailer(
@@ -265,20 +269,6 @@ setRetailerPassword("");
 
     } catch (error) {
 
-      console.error("FULL ERROR:", error);
-
-        if (error.reason) {
-          console.log("Reason:", error.reason);
-        }
-
-        if (error.shortMessage) {
-          console.log("Short:", error.shortMessage);
-        }
-
-        if (error.data) {
-          console.log("Data:", error.data);
-        }
-
       alert(
         error.reason ||
         error.shortMessage ||
@@ -290,6 +280,19 @@ setRetailerPassword("");
   };
 
   const assignRetailer = async () => {
+
+    if (
+      !distributionData.productId ||
+      !distributionData.batchNumber ||
+      !distributionData.retailerId
+    ) {
+
+      alert(
+        "Please scan a product and enter a retailer ID."
+      );
+
+      return;
+    }
 
     try {
 
@@ -308,6 +311,12 @@ setRetailerPassword("");
       alert(
         "Retailer assigned successfully."
       );
+
+      setDistributionData({
+        productId: "",
+        batchNumber: "",
+        retailerId: ""
+      });
 
     } catch (error) {
 
@@ -416,21 +425,13 @@ setRetailerPassword("");
 
     }
 
-    console.log("View Products Clicked");
-    
     try {
 
       const contract =
         await connectContract();
       
-      console.log(
-        typeof contract.getTotalProducts
-      );
-
       const total =
         await contract.getTotalProducts();
-
-      console.log("Total Products:", Number(total));
 
       const productList = [];
 
@@ -848,17 +849,17 @@ const manufacturer =
 
           <p>
             <strong>Product ID:</strong>{" "}
-            {formData.productId}
+            {registeredProduct?.productId}
           </p>
 
           <p>
             <strong>Batch Number:</strong>{" "}
-            {formData.batchNumber}
+            {registeredProduct?.batchNumber}
           </p>
 
           <p>
             <strong>NPRA Registration:</strong>{" "}
-            {formData.npraRegistrationNumber}
+            {registeredProduct?.npraRegistrationNumber}
           </p>
 
         </div>
@@ -922,7 +923,7 @@ const manufacturer =
 
                     <QRCodeCanvas
                       id={`qr-${index}`}
-                      value={`https://skincare-blockchain-git-main-amirahisknd-s-projects.vercel.app/verify/${product[0]}/${product[2]}`}
+                      value={`https://skincare-blockchain-fyp.vercel.app/verify/${product[0]}/${product[2]}`}
                       size={70}
                     />
 

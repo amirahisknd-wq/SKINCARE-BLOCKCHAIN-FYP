@@ -134,7 +134,7 @@ function ConsumerPage() {
           }
         },
 
-        () => {}
+        (errorMessage) => {}
         );
 
       } catch (error) {
@@ -158,6 +158,15 @@ function ConsumerPage() {
 
         alert(
           "Please scan a product first."
+        );
+
+        return;
+      }
+
+      if (!reportReason.trim()) {
+
+        alert(
+          "Please enter the reason for your report."
         );
 
         return;
@@ -246,17 +255,11 @@ useEffect(() => {
           .trim()
           .toUpperCase();
 
-      console.log("=== Consumer Build Version: June 26 Test ===");
-      console.log("Product ID:", productId);
-console.log("Batch Number:", batchNumber);
-
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
-
-        console.log("Verified:", verified);
 
       if (verified) {
 
@@ -497,7 +500,7 @@ return (
       >
         {showReport
           ? "Report Form"
-          : "Report Form"}
+          : "Hide Report Form"}
       </button>
 
       {showReport && (

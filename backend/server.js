@@ -1,6 +1,6 @@
 console.log("Server file started");
 
-const express = require("express");
+const express = requireequire("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 
@@ -9,9 +9,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log("DB_HOST =", process.env.DB_HOST);
-console.log("DB_PORT =", process.env.DB_PORT);
-console.log("DB_NAME =", process.env.DB_NAME);
+console.log("Server file started");
+
+console.log("DB_HOST =", process.env.DB_HOST || "localhost");
+console.log("DB_USER =", process.env.DB_USER || "root");
+console.log("DB_PASSWORD =", process.env.DB_PASSWORD ? "********" : "(empty)");
+console.log("DB_NAME =", process.env.DB_NAME || "skincare_system");
+console.log("DB_PORT =", process.env.DB_PORT || 3306);
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST || "localhost",
@@ -132,6 +136,13 @@ app.post( "/report-product", (req, res) => {
       batchNumber,
       reason
     } = req.body;
+
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Report reason is required."
+      });
+    }
 
     db.query(
       `

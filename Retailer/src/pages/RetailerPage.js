@@ -7,8 +7,12 @@ function RetailerPage() {
 
 const shortenWallet = (wallet) => {
 
-    if (!wallet || typeof wallet !== "string")
+    if (
+        typeof wallet !== "string" ||
+        !wallet
+    ) {
         return "Not Available";
+    }
 
     return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
 
@@ -24,6 +28,9 @@ const [consumerData, setConsumerData] =
 const navigate = useNavigate();
 
 const handleLogout = () => {
+
+    if (scanner) { scanner.stop();
+    }
 
     localStorage.removeItem("retailer");
 
@@ -453,8 +460,7 @@ const stopScanner = async () => {
             name="productId"
             readOnly
             value={consumerData.productId}
-            onChange={handleChange}
-          />
+            />
 
         </div>
 
@@ -469,8 +475,7 @@ const stopScanner = async () => {
             name="batchNumber"
             readOnly
             value={consumerData.batchNumber}
-            onChange={handleChange}
-          />
+            />
 
         </div>
 
@@ -492,7 +497,11 @@ const stopScanner = async () => {
         <button
           className="btn btn-primary w-100"
           onClick={assignConsumer}
-          disabled={walletStatus !== "Authorized"}
+          disabled={
+            walletStatus !== "Authorized" ||
+            !consumerData.productId ||
+            !consumerData.batchNumber
+            }
         >
           Assign Consumer
         </button>
@@ -561,9 +570,9 @@ const stopScanner = async () => {
 
             </tbody>
 
-            </table>
+        </table>
 
-        </div>
+    </div>
 
         )}
 
