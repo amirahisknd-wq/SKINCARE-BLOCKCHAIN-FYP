@@ -246,15 +246,17 @@ useEffect(() => {
           .trim()
           .toUpperCase();
 
+      console.log("=== Consumer Build Version: June 26 Test ===");
+      console.log("Product ID:", productId);
+console.log("Batch Number:", batchNumber);
+
       const verified =
         await contract.verifyProduct(
           productId,
           batchNumber
         );
 
-      console.log("Product ID:", productId);
-console.log("Batch Number:", batchNumber);
-console.log("Verified:", verified);
+        console.log("Verified:", verified);
 
       if (verified) {
 
