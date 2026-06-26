@@ -8,3 +8,6 @@ backend/.env
 
 build/
 dist/
+
+# Ignore old frontend backup
+frontend/

@@ -1,0 +1,147 @@
+html,
+body,
+#root {
+margin: 0;
+padding: 0;
+width: 100%;
+min-height: 100%;
+font-family: "Segoe UI", sans-serif;
+
+background: linear-gradient(
+135deg,
+#f8d7da,
+#fce4ec
+);
+}
+
+/* =========================
+GENERAL COMPONENTS
+========================= */
+
+.navbar {
+background: #e8a5b8 !important;
+}
+
+.navbar-brand {
+font-weight: 600;
+}
+
+.card {
+border: none;
+border-radius: 20px;
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.btn-primary {
+background: #e8a5b8;
+border: none;
+}
+
+.btn-primary:hover {
+background: #d98ca2;
+}
+
+.form-control {
+border-radius: 12px;
+}
+
+.page-title {
+text-align: center;
+margin-bottom: 25px;
+color: #4a4a4a;
+}
+
+.success-card {
+background: #cdeccf;
+border-radius: 15px;
+padding: 15px;
+}
+
+.error-card {
+background: #ffd6d6;
+border-radius: 15px;
+padding: 15px;
+}
+
+#reader {
+width: 100%;
+max-width: 450px;
+margin: auto;
+border-radius: 15px;
+overflow: hidden;
+}
+
+/* =========================
+HOMEPAGE NAVIGATION
+========================= */
+
+.top-navbar {
+width: 100%;
+background: #e8a5b8;
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+gap: 50px;
+padding: 20px 0;
+margin-top: 90px;
+
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.top-navbar a {
+text-decoration: none;
+color: white;
+font-size: 18px;
+font-weight: 500;
+letter-spacing: 2px;
+transition: 0.3s;
+}
+
+.top-navbar a:hover {
+color: #fff8f6;
+}
+
+.top-navbar span {
+color: white;
+}
+
+/* =========================
+HERO SECTION
+========================= */
+
+.hero-section {
+height: 80vh;
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+text-align: center;
+}
+
+.hero-content {
+max-width: 800px;
+}
+
+.hero-content h1 {
+font-size: 4.5rem;
+font-weight: 700;
+color: #d9899f;
+line-height: 1.15;
+margin: -50px 0 20px;
+}
+
+.hero-content p {
+font-size: 1.3rem;
+margin-top: 20px;
+color: #555;
+}
+
+.hero-buttons {
+margin-top: 40px;
+display: flex;
+gap: 20px;
+justify-content: center;
+}

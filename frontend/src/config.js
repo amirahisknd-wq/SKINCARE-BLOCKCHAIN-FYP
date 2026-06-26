@@ -1,5 +1,5 @@
 const config = {
-  contractAddress: "0x4dB619e4D464d64C12D4fDACC5efF87FBAc98b13"
+  contractAddress: "0xd346f5Dd07eeD2A0b2E68928B26214b0c1F084E6"
 };
 
 export default config;

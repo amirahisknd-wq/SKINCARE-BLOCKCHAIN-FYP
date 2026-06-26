@@ -1,0 +1,396 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_retailerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_retailerName",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "_walletAddress",
+				"type": "address"
+			}
+		],
+		"name": "addRetailer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_batchNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_consumerCode",
+				"type": "string"
+			}
+		],
+		"name": "assignConsumer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_batchNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_retailerId",
+				"type": "string"
+			}
+		],
+		"name": "assignRetailer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "productId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "productName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "batchNumber",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "manufacturingDate",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "manufacturerName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "npraRegistrationNumber",
+				"type": "string"
+			}
+		],
+		"name": "ProductRegistered",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_batchNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_manufacturingDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_manufacturerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_npraRegistrationNumber",
+				"type": "string"
+			}
+		],
+		"name": "registerProduct",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_batchNumber",
+				"type": "string"
+			}
+		],
+		"name": "getProduct",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "batchNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "manufacturingDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "manufacturerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "npraRegistrationNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "retailerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "consumerCode",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isRegistered",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getProductByIndex",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "batchNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "manufacturingDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "manufacturerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "npraRegistrationNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "retailerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "consumerCode",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isRegistered",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getRetailerByIndex",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "retailerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "retailerName",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "walletAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getTotalProducts",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getTotalRetailers",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "manufacturer",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "retailerWallets",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_batchNumber",
+				"type": "string"
+			}
+		],
+		"name": "verifyProduct",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

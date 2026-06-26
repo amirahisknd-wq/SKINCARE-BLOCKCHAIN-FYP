@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { connectReadOnlyContract } from "../utils/contract";
 import { Html5Qrcode } from "html5-qrcode";
-import { Link, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import { useEffect } from "react";
 
 function ConsumerPage() {
@@ -309,13 +309,6 @@ return (
     <div 
       className="d-flex justify-content-end mb-4 ">
 
-    <Link
-      to="/"
-      className="btn btn-outline-secondary"
-    >
-      Back to Home
-    </Link>
-
 </div>
       <h2
         className="text-center mb-4"
@@ -391,7 +384,7 @@ return (
           "GENUINE PRODUCT" && (
 
             <small>
-              Product record successfully matched with blockchain records.
+              Product record successfully verified on blockchain.
             </small>
 
           )
