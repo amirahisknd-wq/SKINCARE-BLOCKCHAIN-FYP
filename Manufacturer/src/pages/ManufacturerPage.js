@@ -55,9 +55,8 @@ function ManufacturerPage() {
       walletAddress: ""
     });
 
-  const [retailerPassword,
-       setRetailerPassword] =
-  useState("");
+  const [retailerPassword, setRetailerPassword] =
+    useState("");
 
   const [distributionData, setDistributionData] =
     useState({
@@ -66,17 +65,20 @@ function ManufacturerPage() {
       retailerId: ""
     });
 
-  const [isScanningDistribution,
-    setIsScanningDistribution] =
+  const [isScanningDistribution, setIsScanningDistribution] =
     useState(false);
 
-  const [distributionScanner,
-    setDistributionScanner] =
+  const [distributionScanner, setDistributionScanner] =
     useState(null);
+
+  const [connectedWallet, setConnectedWallet] = useState("");
+  const [contractOwner, setContractOwner] = useState("");
+  const [walletStatus, setWalletStatus] = useState("Not Connected");
+  const [walletConnected, setWalletConnected] = useState(false);
 
   const handleChange = (e) => {
 
-   const upperCaseFields = [
+  const upperCaseFields = [
     "productId",
     "batchNumber",
     "npraRegistrationNumber"
@@ -755,6 +757,40 @@ const manufacturer =
     return <Navigate to="/login" />;
   }
 
+  const connectWallet = async () => {
+    if (!window.ethereum) {
+      alert("Please install MetaMask.");
+      return;
+    }
+
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      const wallet = accounts[0];
+
+      setConnectedWallet(wallet);
+      setWalletConnected(true);
+
+      const contract = await connectContract();
+
+      const owner = await contract.manufacturer();
+
+      setContractOwner(owner);
+
+      if (wallet.toLowerCase() === owner.toLowerCase()) {
+        setWalletStatus("Authorized");
+      } else {
+        setWalletStatus("Unauthorized");
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to connect wallet.");
+    }
+  };
+
   return (
 
     <div className="container">
@@ -795,6 +831,50 @@ const manufacturer =
           Manufacturer Dashboard
 
         </h2>
+
+        <div className="card shadow-sm mb-4">
+          <div className="card-body">
+
+            <h4 className="mb-4">Manufacturer Information</h4>
+
+            <p>
+              <strong>Connected Wallet:</strong><br />
+              {walletConnected
+                ? `${connectedWallet.substring(0, 6)}...${connectedWallet.substring(connectedWallet.length - 4)}`
+                : "Not Connected"}
+            </p>
+
+            <p>
+              <strong>Contract Owner:</strong><br />
+              {contractOwner
+                ? `${contractOwner.substring(0, 6)}...${contractOwner.substring(contractOwner.length - 4)}`
+                : "-"}
+            </p>
+
+            <p>
+              <strong>Wallet Status:</strong>{" "}
+              <span
+                className={`badge ${
+                  walletStatus === "Authorized"
+                    ? "bg-success"
+                    : walletStatus === "Unauthorized"
+                    ? "bg-danger"
+                    : "bg-secondary"
+                }`}
+              >
+                {walletStatus}
+              </span>
+            </p>
+
+            <button
+              className="btn btn-primary"
+              onClick={connectWallet}
+            >
+              Connect MetaMask Wallet
+            </button>
+
+          </div>
+        </div>
 
         <div className="d-flex justify-content-center gap-3 mb-4">
 
