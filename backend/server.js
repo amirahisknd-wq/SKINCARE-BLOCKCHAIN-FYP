@@ -1,16 +1,11 @@
 console.log("Server file started");
 
+const app = express();
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const fs = require("fs");
-
-const certPath = path.join(__dirname, "isrgrootx1.pem");
-
-console.log("Certificate exists:", fs.existsSync(certPath));
-console.log("Certificate path:", certPath);
-
-const app = express();
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
