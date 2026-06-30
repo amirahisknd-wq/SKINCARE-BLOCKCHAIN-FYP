@@ -110,6 +110,11 @@ function ManufacturerPage() {
       return;
     }
 
+    if (walletStatus !== "Authorized") {
+      alert("Please connect the authorized manufacturer wallet.");
+      return;
+  }
+
     const npraRegex =
       /^NOT\d{8}[A-Z]$/;
 
@@ -231,6 +236,11 @@ function ManufacturerPage() {
       return;
     }
 
+    if (walletStatus !== "Authorized") {
+      alert("Please connect the authorized manufacturer wallet.");
+      return;
+  }
+
     try {
 
       const contract =
@@ -246,7 +256,7 @@ function ManufacturerPage() {
       await tx.wait();
 
       await axios.post(
-        "http://localhost:5000/register-retailer",
+        `${process.env.REACT_APP_API_URL}/register-retailer`,
         {
           retailerId:
             retailerData.retailerId.toUpperCase(),
@@ -297,6 +307,11 @@ setRetailerPassword("");
 
       return;
     }
+
+    if (walletStatus !== "Authorized") {
+      alert("Please connect the authorized manufacturer wallet.");
+      return;
+  }
 
     try {
 

@@ -18,7 +18,7 @@ function LoginPage() {
 
       const response =
         await axios.post(
-          "http://localhost:5000/login",
+          `${process.env.REACT_APP_API_URL}/login`,
           {
             username,
             password
