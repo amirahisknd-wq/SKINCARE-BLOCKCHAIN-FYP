@@ -3,6 +3,12 @@ console.log("Server file started");
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
+const fs = require("fs");
+
+const certPath = path.join(__dirname, "isrgrootx1.pem");
+
+console.log("Certificate exists:", fs.existsSync(certPath));
+console.log("Certificate path:", certPath);
 
 const app = express();
 
@@ -14,15 +20,21 @@ console.log("Server file started");
 console.log("DB_HOST =", process.env.DB_HOST || "localhost");
 console.log("DB_USER =", process.env.DB_USER || "root");
 console.log("DB_PASSWORD =", process.env.DB_PASSWORD ? "********" : "(empty)");
-console.log("DB_NAME =", process.env.DB_NAME || "skincare_system");
+console.log("DB_NAME =", process.env.DB_NAME || "railway");
 console.log("DB_PORT =", process.env.DB_PORT || 3306);
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "skincare_system",
-  port: process.env.DB_PORT || 3306
+  database: process.env.DB_NAME || "railway",
+  port: Number(process.env.DB_PORT) || 3306,
+
+  ssl: process.env.DB_HOST
+    ? {
+        ca: fs.readFileSync(path.join(__dirname, "isrgrootx1.pem"))
+      }
+    : undefined
 });
 
 db.connect((err) => {
