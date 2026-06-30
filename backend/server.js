@@ -1,11 +1,13 @@
 console.log("Server file started");
 
-const app = express();
+
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
