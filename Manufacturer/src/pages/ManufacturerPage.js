@@ -255,8 +255,7 @@ function ManufacturerPage() {
 
       await tx.wait();
 
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/register-retailer`,
+      await axios.post("http://localhost:5000/register-retailer",
         {
           retailerId:
             retailerData.retailerId.toUpperCase(),
