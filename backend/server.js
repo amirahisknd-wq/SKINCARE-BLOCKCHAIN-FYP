@@ -1,5 +1,6 @@
-console.log("Server file started");
+require("dotenv").config();
 
+console.log("Server file started");
 
 const express = require("express");
 const mysql = require("mysql2");
@@ -27,12 +28,14 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME || "railway",
   port: Number(process.env.DB_PORT) || 3306,
 
-  ssl: process.env.DB_HOST
-    ? {
-        ca: fs.readFileSync(path.join(__dirname, "isrgrootx1.pem"))
-      }
-    : undefined
-});
+  ssl:
+    process.env.DB_HOST &&
+    process.env.DB_HOST !== "localhost"
+      ? {
+          ca: fs.readFileSync(path.join(__dirname, "isrgrootx1.pem"))
+        }
+      : undefined
+  });
 
 db.connect((err) => {
 
