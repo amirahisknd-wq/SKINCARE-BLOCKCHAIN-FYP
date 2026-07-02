@@ -156,7 +156,7 @@ function ManufacturerPage() {
       });
 
       const qrContent =
-        `https://skincare-blockchain-fyp.vercel.app/verify/${formData.productId}/${formData.batchNumber}`;
+        `${process.env.REACT_APP_CONSUMER_URL}/verify/${formData.productId}/${formData.batchNumber}`;
       setQrData(qrContent);
 
       setSuccessMessage(
@@ -255,7 +255,7 @@ function ManufacturerPage() {
 
       await tx.wait();
 
-      await axios.post("http://localhost:5000/register-retailer",
+      await axios.post(`${process.env.REACT_APP_API_URL}/register-retailer`,
         {
           retailerId:
             retailerData.retailerId.toUpperCase(),
@@ -587,7 +587,7 @@ setRetailerPassword("");
 
   try {
 
-    const qrData = `https://skincare-blockchain-fyp.vercel.app/verify/${product[0]}/${product[2]}`;
+    const qrData = `${process.env.REACT_APP_CONSUMER_URL}/verify/${product[0]}/${product[2]}`;
 
     const qrImage = await QRCode.toDataURL(qrData, {
       width: 300,
@@ -1159,7 +1159,7 @@ const manufacturer =
 
                     <QRCodeCanvas
                       id={`qr-${index}`}
-                      value={`https://skincare-blockchain-fyp.vercel.app/verify/${product[0]}/${product[2]}`}
+                      value={`${process.env.REACT_APP_CONSUMER_URL}/verify/${product[0]}/${product[2]}`}
                       size={70}
                     />
 

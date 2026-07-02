@@ -14,7 +14,7 @@ export const connectContract = async () => {
   });
 
   const provider = new ethers.BrowserProvider(window.ethereum);
-
+ 
   const signer = await provider.getSigner();
 
   const contract = new ethers.Contract(
@@ -31,7 +31,7 @@ async () => {
 
   const provider =
     new ethers.JsonRpcProvider(
-      "https://eth-sepolia.g.alchemy.com/v2/y5VUjTR8FpX5bWzSVAftj"
+      process.env.REACT_APP_ALCHEMY_RPC
     );
 
   const contract =
