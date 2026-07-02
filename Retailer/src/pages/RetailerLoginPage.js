@@ -17,6 +17,7 @@ function RetailerLoginPage() {
     try {
 
       const response =
+      console.log("API URL =", process.env.REACT_APP_API_URL);
         await axios.post(`${process.env.REACT_APP_API_URL}/retailer-login`,
           {
             retailerId,
