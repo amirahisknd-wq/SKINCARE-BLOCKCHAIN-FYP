@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-console.log("Server file started");
-
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
@@ -12,8 +10,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-console.log("Server file started");
 
 console.log("DB_HOST =", process.env.DB_HOST || "localhost");
 console.log("DB_USER =", process.env.DB_USER || "root");
@@ -142,6 +138,7 @@ app.post("/retailer-login", (req, res) => {
 });
 
 app.post( "/report-product", (req, res) => {
+
 
     const {
       productId,

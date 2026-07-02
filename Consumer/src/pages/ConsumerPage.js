@@ -151,6 +151,8 @@ function ConsumerPage() {
 
     const reportProduct = async () => {
 
+      console.log("reportProduct called");
+
       if (
         !scannedProductId ||
         !scannedBatchNumber
