@@ -15,7 +15,6 @@ function RetailerLoginPage() {
   const handleLogin = async () => {
 
     try {
-console.log("API URL =", process.env.REACT_APP_API_URL);
       const response =
         await axios.post(`${process.env.REACT_APP_API_URL}/retailer-login`,
           {
