@@ -171,8 +171,9 @@ function ConsumerPage() {
 
       try {
 
-    const response =
     console.log(retailerId);
+
+    const response =
       await axios.post(
         `${process.env.REACT_APP_API_URL}/report-product`,
         {
@@ -190,26 +191,16 @@ function ConsumerPage() {
       alert(
         "Report Submitted Successfully"
       );
-
+      
       setReportReason("");
     }
 
   } catch (error) {
-
-  console.error("Full error:", error);
-
-  console.log("error.response =", error.response);
-  console.log("error.request =", error.request);
-  console.log("error.message =", error.message);
-
-  if (error.response) {
-    console.log("Status:", error.response.status);
-    console.log("Data:", error.response.data);
+    console.error(error);
+    alert(
+      "Failed To Submit Report"
+    );
   }
-
-
-  alert("Failed To Submit Report");
-}
 };
 
   const stopScanner = async () => {
