@@ -138,6 +138,7 @@ app.post( "/report-product", (req, res) => {
       productId,
       batchNumber,
       retailerId,
+      sellerName,
       reason
     } = req.body;
 
@@ -155,14 +156,16 @@ app.post( "/report-product", (req, res) => {
         product_id,
         batch_number,
         retailer_id,
+        seller_name,
         report_reason
       )
-      VALUES (?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?)
       `,
       [
         productId,
         batchNumber,
         retailerId,
+        sellerName,
         reason
       ],
 
