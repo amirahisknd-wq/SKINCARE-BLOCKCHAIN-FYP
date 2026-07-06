@@ -18,12 +18,13 @@ const shortenWallet = (wallet) => {
 
 };
 
-const [consumerData, setConsumerData] =
-    useState({
+const [consumerData, setConsumerData] = useState({
       productId: "",
       batchNumber: "",
       consumerCode: ""
     });
+
+const [productInfo, setProductInfo] = useState(null);
 
 const navigate = useNavigate();
 
@@ -33,6 +34,8 @@ const handleLogout = () => {
     }
 
     localStorage.removeItem("retailer");
+
+    setProductInfo(null);
 
     navigate("/retailer-login", {
         replace: true
@@ -111,6 +114,8 @@ const [registeredWallet, setRegisteredWallet] =
         consumerCode: ""
       });
 
+      setProductInfo(null);
+
     } catch (error) {
 
       console.error(error);
@@ -175,6 +180,17 @@ const [registeredWallet, setRegisteredWallet] =
                         batchNumber,
                         consumerCode: consumerData.consumerCode
                     });
+
+                    const contract = await connectContract();
+
+                    const product = await contract.getProduct(
+                            productId,
+                            batchNumber
+                        );
+
+                console.log(product);
+
+                    setProductInfo(product);
 
                 },
 
@@ -478,6 +494,57 @@ const stopScanner = async () => {
             />
 
         </div>
+
+        {productInfo && (
+
+            <div className="card shadow-sm mb-4">
+
+                <div className="card-body">
+
+                    <h5
+                        className="card-title"
+                        style={{ color: "#E08CA0" }}
+                    >
+                        Product Information
+                    </h5>
+
+                    <div className="row">
+
+                        <div className="col-md-6">
+
+                            <p className="mb-3">
+                                <strong>Product ID</strong><br />
+                                {productInfo[0]}
+                            </p>
+
+                            <p className="mb-3">
+                                <strong>Product Name</strong><br />
+                                {productInfo[1]}
+                            </p>
+
+                        </div>
+
+                        <div className="col-md-6">
+
+                            <p className="mb-3">
+                                <strong>Batch Number</strong><br />
+                                {productInfo[2]}
+                            </p>
+
+                            <p className="mb-3">
+                                <strong>Manufacturer</strong><br />
+                                {productInfo[4]}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            )}
 
         <div className="mb-3">
 
