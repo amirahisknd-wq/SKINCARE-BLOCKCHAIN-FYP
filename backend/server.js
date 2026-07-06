@@ -11,26 +11,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log("DB_HOST =", process.env.DB_HOST || "localhost");
-console.log("DB_USER =", process.env.DB_USER || "root");
+console.log("DB_HOST =", process.env.DB_HOST);
+console.log("DB_USER =", process.env.DB_USER);
 console.log("DB_PASSWORD =", process.env.DB_PASSWORD ? "********" : "(empty)");
-console.log("DB_NAME =", process.env.DB_NAME || "railway");
-console.log("DB_PORT =", process.env.DB_PORT || 3306);
+console.log("DB_NAME =", process.env.DB_NAME);
+console.log("DB_PORT =", process.env.DB_PORT);
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "railway",
-  port: Number(process.env.DB_PORT) || 3306,
-
-  ssl:
-    process.env.DB_HOST &&
-    process.env.DB_HOST !== "localhost"
-      ? {
-          ca: fs.readFileSync(path.join(__dirname, "isrgrootx1.pem"))
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
+  ssl: {
+      ca: fs.readFileSync(path.join(__dirname, "isrgrootx1.pem"))
         }
-      : undefined
   });
 
 db.connect((err) => {
@@ -40,7 +35,6 @@ db.connect((err) => {
     return;
   }
 
-  console.log("MySQL Connected");
 });
 
 app.post("/login", (req, res) => {
@@ -143,6 +137,7 @@ app.post( "/report-product", (req, res) => {
     const {
       productId,
       batchNumber,
+      retailerId,
       reason
     } = req.body;
 
@@ -159,13 +154,15 @@ app.post( "/report-product", (req, res) => {
       (
         product_id,
         batch_number,
+        retailer_id,
         report_reason
       )
-      VALUES (?, ?, ?)
+      VALUES (?, ?, ?, ?)
       `,
       [
         productId,
         batchNumber,
+        retailerId,
         reason
       ],
 
