@@ -24,6 +24,8 @@ function ConsumerPage() {
   const [scannedBatchNumber, setScannedBatchNumber] = useState("");
 
   const [retailerId, setRetailerId] = useState("");
+  
+  const [sellerName, setSellerName] = useState("");
 
   const { 
     productId: urlProductId,
@@ -160,6 +162,14 @@ function ConsumerPage() {
         return;
       }
 
+      if (!sellerName.trim()) {
+
+        alert("Please enter the seller or shop name.");
+
+        return;
+
+      }
+
       if (!reportReason.trim()) {
 
         alert(
@@ -170,8 +180,6 @@ function ConsumerPage() {
       }
 
       try {
-
-    console.log(retailerId);
 
     const response =
       await axios.post(
@@ -536,6 +544,23 @@ return (
             className="form-control"
             value={scannedBatchNumber}
             readOnly
+          />
+
+        </div>
+
+        <div className="mb-3">
+
+          <label className="form-label">
+            Seller / Shop Name
+          </label>
+
+          <input
+            className="form-control"
+            placeholder="Example: Watsons Shah Alam"
+            value={sellerName}
+            onChange={(e) =>
+              setSellerName(e.target.value)
+            }
           />
 
         </div>
