@@ -465,36 +465,6 @@ const stopScanner = async () => {
 
             )}
 
-        <div className="mb-3">
-
-          <label>
-            Product ID
-          </label>
-
-          <input
-            className="form-control"
-            name="productId"
-            readOnly
-            value={consumerData.productId}
-            />
-
-        </div>
-
-        <div className="mb-3">
-
-          <label>
-            Batch Number
-          </label>
-
-          <input
-            className="form-control"
-            name="batchNumber"
-            readOnly
-            value={consumerData.batchNumber}
-            />
-
-        </div>
-
         {productInfo && (
 
             <div className="card shadow-sm mb-4">
