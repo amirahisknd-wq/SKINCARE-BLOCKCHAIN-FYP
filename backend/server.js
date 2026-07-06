@@ -166,7 +166,7 @@ app.post( "/report-product", (req, res) => {
         reason
       ],
 
-      (err, result) => {
+      (err) => {
 
         if (err) {
 
@@ -177,22 +177,9 @@ app.post( "/report-product", (req, res) => {
           });
         }
 
-console.log("Insert successful");
-console.log(result);
-
-db.query(
-  "SELECT * FROM suspicious_reports",
-  (err, rows) => {
-
-    console.log("Current suspicious_reports table:");
-    console.log(rows);
-
-    res.json({
-      success: true
-    });
-
-  }
-);
+        res.json({
+          success: true
+        });
       }
     );
   }
