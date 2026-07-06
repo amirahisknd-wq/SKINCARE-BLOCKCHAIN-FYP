@@ -233,6 +233,42 @@ app.post( "/register-retailer", (req, res) => {
   }
 );
 
+app.get("/suspicious-reports", (req, res) => {
+
+  const sql = `
+    SELECT
+      s.id,
+      s.product_id,
+      s.batch_number,
+      r.retailer_name,
+      s.report_reason,
+      s.report_date
+    FROM suspicious_reports s
+    LEFT JOIN retailers r
+      ON s.retailer_id = r.retailer_id
+    ORDER BY s.report_date DESC
+  `;
+
+  db.query(sql, (err, results) => {
+
+    if (err) {
+      console.error(err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to retrieve suspicious reports."
+      });
+    }
+
+    res.json({
+      success: true,
+      reports: results
+    });
+
+  });
+
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
