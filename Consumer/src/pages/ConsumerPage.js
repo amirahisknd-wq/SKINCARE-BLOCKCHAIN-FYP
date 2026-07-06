@@ -188,6 +188,7 @@ function ConsumerPage() {
           productId:scannedProductId,
           batchNumber:scannedBatchNumber,
           retailerId: retailerId,
+          sellerName: sellerName,
           reason:reportReason
         }
       );
@@ -201,6 +202,7 @@ function ConsumerPage() {
       );
       
       setReportReason("");
+      setSellerName("");
     }
 
   } catch (error) {
