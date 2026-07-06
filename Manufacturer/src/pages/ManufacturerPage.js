@@ -24,52 +24,43 @@ function ManufacturerPage() {
 
   const [qrData, setQrData] = useState("");
 
-  const [successMessage, setSuccessMessage] =
-    useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const [products, setProducts] =
-    useState([]);
+  const [products, setProducts] = useState([]);
 
-  const [showProducts, setShowProducts] =
-    useState(false);
+  const [showProducts, setShowProducts] = useState(false);
 
-  const [showDistributions, setShowDistributions] =
-    useState(false);
+  const [showDistributions, setShowDistributions] = useState(false);
 
-  const [distributionRecords, setDistributionRecords] =
-    useState([]);
+  const [distributionRecords, setDistributionRecords] = useState([]);
 
-  const [retailers, setRetailers] =
-    useState([]);
+  const [reports, setReports] = useState([]);
 
-  const [showRetailers, setShowRetailers] =
-    useState(false);
+  const [showReports, setShowReports] = useState(false);
 
-  const [activeSection, setActiveSection] =
-    useState("product");
+  const [retailers, setRetailers] = useState([]);
 
-  const [retailerData, setRetailerData] =
-    useState({
+  const [showRetailers, setShowRetailers] = useState(false);
+
+  const [activeSection, setActiveSection] = useState("product");
+
+  const [retailerData, setRetailerData] = useState({
       retailerId: "",
       retailerName: "",
       walletAddress: ""
     });
 
-  const [retailerPassword, setRetailerPassword] =
-    useState("");
+  const [retailerPassword, setRetailerPassword] = useState("");
 
-  const [distributionData, setDistributionData] =
-    useState({
+  const [distributionData, setDistributionData] = useState({
       productId: "",
       batchNumber: "",
       retailerId: ""
     });
 
-  const [isScanningDistribution, setIsScanningDistribution] =
-    useState(false);
+  const [isScanningDistribution, setIsScanningDistribution] = useState(false);
 
-  const [distributionScanner, setDistributionScanner] =
-    useState(null);
+  const [distributionScanner, setDistributionScanner] = useState(null);
 
   const [connectedWallet, setConnectedWallet] = useState("");
   const [contractOwner, setContractOwner] = useState("");
@@ -489,7 +480,6 @@ setRetailerPassword("");
 
     }
 
-
     try {
 
       const contract =
@@ -524,6 +514,32 @@ setRetailerPassword("");
     }
 
   };
+
+  const loadReports = async () => {
+
+    try {
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/suspicious-reports`
+      );
+
+      if (response.data.success) {
+
+        setReports(response.data.reports);
+
+        setShowReports(true);
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Failed to load suspicious reports.");
+
+    }
+
+};
 
   const loadDistributionRecords = async () => {
 
@@ -929,6 +945,20 @@ const manufacturer =
             }
           >
            Product Distribution 
+          </button>
+
+          <button
+            className={
+              activeSection === "reports"
+                ? "btn btn-primary"
+                : "btn btn-outline-primary"
+            }
+            onClick={() => {
+              setActiveSection("reports");
+              loadReports();
+            }}
+          >
+            Suspicious Reports
           </button>
 
         </div>
@@ -1514,6 +1544,64 @@ const manufacturer =
   </div>
 
 )}
+
+  {activeSection === "reports" &&
+  showReports && (
+
+  <div className="card shadow-lg mt-4 p-4">
+
+  <h4
+    className="mb-4"
+    style={{ color: "#E08CA0" }}
+  >
+    Suspicious Product Reports
+  </h4>
+
+  <table className="table table-striped">
+
+  <thead>
+
+  <tr>
+
+  <th>Product ID</th>
+  <th>Batch Number</th>
+  <th>Retailer Company</th>
+  <th>Reason</th>
+  <th>Report Date</th>
+
+  </tr>
+
+  </thead>
+
+  <tbody>
+
+  {reports.map((report) => (
+
+  <tr key={report.id}>
+
+  <td>{report.product_id}</td>
+
+  <td>{report.batch_number}</td>
+
+  <td>{report.retailer_name}</td>
+
+  <td>{report.report_reason}</td>
+
+  <td>
+    {new Date(report.report_date).toLocaleString()}
+  </td>
+
+  </tr>
+
+  ))}
+
+  </tbody>
+
+  </table>
+
+  </div>
+
+  )}
 
       </div>
 
