@@ -1575,8 +1575,8 @@ const manufacturer =
       Batch Number
     </th>
 
-    <th style={{ width: "22%" }}>
-      Retailer Company
+    <th style={{ width: "25%" }}>
+      Seller / Shop Name
     </th>
 
     <th style={{ width: "36%" }}>
@@ -1601,7 +1601,7 @@ const manufacturer =
 
     <td>{report.batch_number}</td>
 
-    <td>{report.retailer_name}</td>
+    <td>{report.seller_name || "-"}</td>
 
     <td
       style={{
