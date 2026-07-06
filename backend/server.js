@@ -180,9 +180,19 @@ app.post( "/report-product", (req, res) => {
 console.log("Insert successful");
 console.log(result);
 
-        res.json({
-          success: true
-        });
+db.query(
+  "SELECT * FROM suspicious_reports",
+  (err, rows) => {
+
+    console.log("Current suspicious_reports table:");
+    console.log(rows);
+
+    res.json({
+      success: true
+    });
+
+  }
+);
       }
     );
   }
