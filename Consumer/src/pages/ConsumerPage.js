@@ -109,6 +109,8 @@ function ConsumerPage() {
                   batchNumber
             );
 
+            console.log(product);
+
           setProductInfo(product);
 
           setVerificationResult(
@@ -270,6 +272,8 @@ useEffect(() => {
             productId,
             batchNumber
           );
+
+          console.log(product);
 
         setProductInfo(product);
 
