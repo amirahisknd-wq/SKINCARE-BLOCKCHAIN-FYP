@@ -828,8 +828,12 @@ const manufacturer =
       <div
         className="card shadow-lg p-4 mx-auto"
         style={{
-          maxWidth: "900px"
-        }}
+          maxWidth:
+            activeSection === "reports"
+              ? "1250px"
+              : "900px",
+          transition: "all 0.3s ease"
+              }}
       >
     <div 
         
@@ -1557,45 +1561,67 @@ const manufacturer =
     Suspicious Product Reports
   </h4>
 
-  <table className="table table-striped">
+    <table className="table table-striped table-hover align-middle">
 
-  <thead>
+    <thead className="table-light">
 
-  <tr>
+    <tr>
 
-  <th>Product ID</th>
-  <th>Batch Number</th>
-  <th>Retailer Company</th>
-  <th>Reason</th>
-  <th>Report Date</th>
+    <th style={{ width: "12%" }}>
+      Product ID
+    </th>
 
-  </tr>
+    <th style={{ width: "15%" }}>
+      Batch Number
+    </th>
 
-  </thead>
+    <th style={{ width: "22%" }}>
+      Retailer Company
+    </th>
 
-  <tbody>
+    <th style={{ width: "36%" }}>
+      Report Reason
+    </th>
 
-  {reports.map((report) => (
+    <th style={{ width: "15%" }}>
+      Report Date
+    </th>
 
-  <tr key={report.id}>
+    </tr>
 
-  <td>{report.product_id}</td>
+    </thead>
 
-  <td>{report.batch_number}</td>
+    <tbody>
 
-  <td>{report.retailer_name}</td>
+    {reports.map((report) => (
 
-  <td>{report.report_reason}</td>
+    <tr key={report.id}>
 
-  <td>
-    {new Date(report.report_date).toLocaleString()}
-  </td>
+    <td>{report.product_id}</td>
 
-  </tr>
+    <td>{report.batch_number}</td>
 
-  ))}
+    <td>{report.retailer_name}</td>
 
-  </tbody>
+    <td
+      style={{
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+        minWidth: "350px"
+      }}
+    >
+      {report.report_reason}
+    </td>
+
+    <td style={{ whiteSpace: "nowrap" }}>
+      {new Date(report.report_date).toLocaleString()}
+    </td>
+
+    </tr>
+
+    ))}
+
+    </tbody>
 
   </table>
 
