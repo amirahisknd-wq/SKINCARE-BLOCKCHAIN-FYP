@@ -149,6 +149,15 @@ app.post( "/report-product", (req, res) => {
     }
 
     db.query(
+  "SELECT DATABASE() AS currentDatabase",
+  (err, result) => {
+
+    console.log("Current Database:", result);
+
+  }
+);
+
+    db.query(
       `
       INSERT INTO suspicious_reports
       (
