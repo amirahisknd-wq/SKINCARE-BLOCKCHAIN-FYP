@@ -7,29 +7,23 @@ import { useEffect } from "react";
 
 function ConsumerPage() {
 
-  const [verificationResult, setVerificationResult] =
-    useState("");
+  const [verificationResult, setVerificationResult] = useState("");
 
-  const [productInfo, setProductInfo] =
-    useState(null);
+  const [productInfo, setProductInfo] = useState(null);
 
-  const [isScanning, setIsScanning] =
-    useState(false);
+  const [isScanning, setIsScanning] = useState(false);
 
-  const [scanner, setScanner] =
-    useState(null);
+  const [scanner, setScanner] = useState(null);
 
-  const [reportReason, setReportReason] =
-    useState("");
+  const [reportReason, setReportReason] = useState("");
 
-  const [showReport, setShowReport] =
-    useState(false);
+  const [showReport, setShowReport] = useState(false);
   
-  const [scannedProductId, setScannedProductId] =
-    useState("");
+  const [scannedProductId, setScannedProductId] = useState("");
 
-  const [scannedBatchNumber, setScannedBatchNumber] =
-    useState("");
+  const [scannedBatchNumber, setScannedBatchNumber] = useState("");
+
+  const [retailerId, setRetailerId] = useState("");
 
   const { 
     productId: urlProductId,
@@ -109,9 +103,8 @@ function ConsumerPage() {
                   batchNumber
             );
 
-            console.log(product);
-
           setProductInfo(product);
+          setRetailerId(product[6]);
 
           setVerificationResult(
             "GENUINE PRODUCT"
@@ -179,17 +172,14 @@ function ConsumerPage() {
       try {
 
     const response =
+    console.log(retailerId);
       await axios.post(
         `${process.env.REACT_APP_API_URL}/report-product`,
         {
-          productId:
-            scannedProductId,
-
-          batchNumber:
-            scannedBatchNumber,
-
-          reason:
-            reportReason
+          productId:scannedProductId,
+          batchNumber:scannedBatchNumber,
+          retailerId: retailerId,
+          reason:reportReason
         }
       );
 
@@ -273,9 +263,8 @@ useEffect(() => {
             batchNumber
           );
 
-          console.log(product);
-
         setProductInfo(product);
+        setRetailerId(product[6]);
 
         setScannedProductId(urlProductId);
         setScannedBatchNumber(urlBatchNumber);
