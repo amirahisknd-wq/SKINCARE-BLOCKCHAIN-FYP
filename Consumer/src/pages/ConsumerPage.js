@@ -196,12 +196,15 @@ function ConsumerPage() {
 
   } catch (error) {
 
-    console.error(error);
+  console.error(error);
 
-    alert(
-      "Failed To Submit Report"
-    );
+  if (error.response) {
+    console.log(error.response.data);
+    console.log(error.response.status);
   }
+
+  alert("Failed To Submit Report");
+}
 };
 
   const stopScanner = async () => {
