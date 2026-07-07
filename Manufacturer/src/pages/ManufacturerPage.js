@@ -58,6 +58,8 @@ function ManufacturerPage() {
       retailerId: ""
     });
 
+  const [distributionProduct, setDistributionProduct] = useState(null);
+
   const [isScanningDistribution, setIsScanningDistribution] = useState(false);
 
   const [distributionScanner, setDistributionScanner] = useState(null);
@@ -114,20 +116,16 @@ function ManufacturerPage() {
         formData.npraRegistrationNumber
     )
   ) {
-    alert(
-      "Invalid NPRA format. Example: NOT26050001K"
-    );
+    alert("Invalid NPRA format. Example: NOT26050001K");
 
     return;
   }
 
     try {
 
-      const contract =
-        await connectContract();
+      const contract = await connectContract();
 
-      const tx =
-        await contract.registerProduct(
+      const tx = await contract.registerProduct(
           formData.productId,
           formData.productName,
           formData.batchNumber,
@@ -150,9 +148,7 @@ function ManufacturerPage() {
         `${process.env.REACT_APP_CONSUMER_URL}/verify/${formData.productId}/${formData.batchNumber}`;
       setQrData(qrContent);
 
-      setSuccessMessage(
-        "✅ Product successfully registered on blockchain."
-      );
+      setSuccessMessage("✅ Product successfully registered on blockchain.");
 
       setFormData({
         productId: "",
@@ -182,9 +178,7 @@ function ManufacturerPage() {
 
   const handleRetailerChange = (e) => {
 
-    const upperCaseFields = [
-      "retailerId"
-    ];
+    const upperCaseFields = ["retailerId"];
 
     setRetailerData({
       ...retailerData,
@@ -234,11 +228,9 @@ function ManufacturerPage() {
 
     try {
 
-      const contract =
-        await connectContract();
+      const contract = await connectContract();
 
-      const tx =
-        await contract.addRetailer(
+      const tx = await contract.addRetailer(
           retailerData.retailerId,
           retailerData.retailerName,
           retailerData.walletAddress
@@ -259,9 +251,7 @@ function ManufacturerPage() {
         }
       );
 
-      alert(
-        "Retailer successfully added."
-      );
+      alert("Retailer successfully added.");
 
       setRetailerData({
         retailerId: "",
@@ -291,9 +281,7 @@ setRetailerPassword("");
       !distributionData.retailerId
     ) {
 
-      alert(
-        "Please scan a product and enter a retailer ID."
-      );
+      alert("Please scan a product and enter a retailer ID.");
 
       return;
     }
@@ -305,11 +293,9 @@ setRetailerPassword("");
 
     try {
 
-      const contract =
-        await connectContract();
+      const contract = await connectContract();
 
-      const tx =
-        await contract.assignRetailer(
+      const tx = await contract.assignRetailer(
           distributionData.productId,
           distributionData.batchNumber,
           distributionData.retailerId
@@ -317,15 +303,15 @@ setRetailerPassword("");
 
       await tx.wait();
 
-      alert(
-        "Retailer assigned successfully."
-      );
+      alert("Retailer assigned successfully.");
 
       setDistributionData({
         productId: "",
         batchNumber: "",
         retailerId: ""
       });
+
+      setDistributionProduct(null);
 
     } catch (error) {
 
@@ -366,24 +352,26 @@ setRetailerPassword("");
 
             setIsScanningDistribution(false);
 
-            const parts =
-              decodedText.split("/");
+            const parts = decodedText.split("/");
 
-            const productId =
-              parts[
-                parts.length - 2
-              ];
+            const productId = parts[parts.length - 2];
 
-            const batchNumber =
-              parts[
-                parts.length - 1
-              ];
+            const batchNumber = parts[parts.length - 1];
 
             setDistributionData({
               ...distributionData,
               productId,
               batchNumber
             });
+
+            const contract = await connectContract();
+
+            const product = await contract.getProduct(
+                productId,
+                batchNumber
+              );
+
+            setDistributionProduct(product);
 
           }
 
@@ -393,9 +381,7 @@ setRetailerPassword("");
 
         console.error(error);
 
-        alert(
-          "Camera failed."
-        );
+        alert("Camera failed.");
 
       }
 
@@ -406,21 +392,15 @@ setRetailerPassword("");
   const stopDistributionScanner =
     async () => {
 
-    if (
-      distributionScanner
-    ) {
+    if (distributionScanner) {
 
       await distributionScanner.stop();
 
-      setDistributionScanner(
-        null
-      );
+      setDistributionScanner(null);
 
     }
 
-    setIsScanningDistribution(
-      false
-    );
+    setIsScanningDistribution(false);
 
   };
 
@@ -436,11 +416,9 @@ setRetailerPassword("");
 
     try {
 
-      const contract =
-        await connectContract();
+      const contract = await connectContract();
       
-      const total =
-        await contract.getTotalProducts();
+      const total = await contract.getTotalProducts();
 
       const productList = [];
 
@@ -516,29 +494,18 @@ setRetailerPassword("");
   };
 
   const loadReports = async () => {
-
     try {
-
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/suspicious-reports`
       );
-
       if (response.data.success) {
-
         setReports(response.data.reports);
-
         setShowReports(true);
-
       }
-
     } catch (error) {
-
       console.error(error);
-
       alert("Failed to load suspicious reports.");
-
     }
-
 };
 
   const loadDistributionRecords = async () => {
@@ -553,11 +520,22 @@ setRetailerPassword("");
 
     try {
 
-      const contract =
-        await connectContract();
+      const contract = await connectContract();
 
-      const total =
-        await contract.getTotalProducts();
+      const retailerResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/retailers`
+      );
+
+      const retailerMap = {};
+
+      retailerResponse.data.retailers.forEach((retailer) => {
+
+        retailerMap[retailer.retailer_id] =
+          retailer.retailer_name;
+
+      });
+
+      const total = await contract.getTotalProducts();
 
       const records = [];
 
@@ -567,8 +545,7 @@ setRetailerPassword("");
         i++
       ) {
 
-        const product =
-          await contract.getProductByIndex(i);
+        const product = await contract.getProductByIndex(i);
 
         if (
           product[6] &&
@@ -576,18 +553,18 @@ setRetailerPassword("");
         ) {
 
           records.push({
-            productId: product[0],
-            batchNumber: product[2],
-            retailerId: product[6]
+              productId: product[0],
+              productName: product[1],
+              batchNumber: product[2],
+              retailerId: product[6],
+              retailerName:retailerMap[product[6]] || "-"
           });
 
         }
 
       }
 
-      setDistributionRecords(
-        records
-      );
+      setDistributionRecords(records);
 
       setShowDistributions(true);
 
@@ -1418,37 +1395,56 @@ const manufacturer =
 
     )}
 
-    <div className="mb-3">
+    {distributionProduct && (
 
-      <label className="form-label">
-        Product ID
-      </label>
+    <div className="card shadow-sm mb-4">
 
-      <input
-        className="form-control"
-        name="productId"
-        readOnly
-        value={distributionData.productId}
-        onChange={handleDistributionChange}
-      />
+      <div className="card-body">
+
+        <h5
+          className="card-title"
+          style={{ color: "#E08CA0" }}
+        >
+          Product Information
+        </h5>
+
+        <div className="row">
+
+          <div className="col-md-6">
+
+            <p className="mb-3">
+              <strong>Product ID</strong><br />
+              {distributionProduct[0]}
+            </p>
+
+            <p className="mb-3">
+              <strong>Product Name</strong><br />
+              {distributionProduct[1]}
+            </p>
+
+          </div>
+
+          <div className="col-md-6">
+
+            <p className="mb-3">
+              <strong>Batch Number</strong><br />
+              {distributionProduct[2]}
+            </p>
+
+            <p className="mb-3">
+              <strong>Manufacturer</strong><br />
+              {distributionProduct[4]}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
-    <div className="mb-3">
-
-      <label className="form-label">
-        Batch Number
-      </label>
-
-      <input
-        className="form-control"
-        name="batchNumber"
-        readOnly
-        value={distributionData.batchNumber}
-        onChange={handleDistributionChange}
-      />
-
-    </div>
+    )}
 
     <div className="mb-3">
 
@@ -1506,8 +1502,10 @@ const manufacturer =
               <tr>
 
                 <th>Product ID</th>
+                <th>Product Name</th>
                 <th>Batch Number</th>
                 <th>Retailer ID</th>
+                <th>Retailer Name</th>
 
               </tr>
 
@@ -1520,17 +1518,11 @@ const manufacturer =
 
                   <tr key={index}>
 
-                    <td>
-                      {record.productId}
-                    </td>
-
-                    <td>
-                      {record.batchNumber}
-                    </td>
-
-                    <td>
-                      {record.retailerId}
-                    </td>
+                    <td>{record.productId}</td>
+                    <td>{record.productName}</td>
+                    <td>{record.batchNumber}</td>
+                    <td>{record.retailerId}</td>
+                    <td>{record.retailerName}</td>
 
                   </tr>
 
