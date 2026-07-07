@@ -271,6 +271,40 @@ app.get("/suspicious-reports", (req, res) => {
 
 });
 
+app.get("/retailers", (req, res) => {
+
+  db.query(
+
+    `
+    SELECT
+      retailer_id,
+      retailer_name
+    FROM retailers
+    `,
+
+    (err, results) => {
+
+      if (err) {
+
+        console.error(err);
+
+        return res.status(500).json({
+          success: false
+        });
+
+      }
+
+      res.json({
+        success: true,
+        retailers: results
+      });
+
+    }
+
+  );
+
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
