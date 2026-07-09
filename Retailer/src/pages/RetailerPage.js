@@ -170,8 +170,7 @@ const [registeredWallet, setRegisteredWallet] =
 
                     } else {
 
-                        [productId, batchNumber] =
-                            decodedText.split("|");
+                        [productId, batchNumber] = decodedText.split("|");
 
                     }
 
@@ -180,15 +179,8 @@ const [registeredWallet, setRegisteredWallet] =
                         batchNumber,
                         consumerCode: consumerData.consumerCode
                     });
-
                     const contract = await connectContract();
-
-                    const product = await contract.getProduct(
-                            productId,
-                            batchNumber
-                        );
-
-                console.log(product);
+                    const product = await contract.getProduct(productId, batchNumber);
 
                     setProductInfo(product);
 
@@ -535,7 +527,6 @@ const stopScanner = async () => {
           className="btn btn-primary w-100"
           onClick={assignConsumer}
           disabled={
-            walletStatus !== "Authorized" ||
             !consumerData.productId ||
             !consumerData.batchNumber
             }
