@@ -34,6 +34,8 @@ function ManufacturerPage() {
 
   const [distributionRecords, setDistributionRecords] = useState([]);
 
+  const [selectedRetailer, setSelectedRetailer] = useState("All");
+
   const [reports, setReports] = useState([]);
 
   const [showReports, setShowReports] = useState(false);
@@ -1493,6 +1495,45 @@ const manufacturer =
             Distribution Records
           </h4>
 
+          <div className="mb-3">
+
+            <label className="form-label">
+              Filter by Retailer
+            </label>
+
+            <select
+              className="form-select"
+              value={selectedRetailer}
+              onChange={(e) =>
+                setSelectedRetailer(e.target.value)
+              }
+            >
+
+              <option value="All">
+                All Retailers
+              </option>
+
+              {[
+                ...new Set(
+                  distributionRecords.map(
+                    record => record.retailerName
+                  )
+                )
+              ].map((retailerName) => (
+
+                <option
+                  key={retailerName}
+                  value={retailerName}
+                >
+                  {retailerName}
+                </option>
+
+              ))}
+
+            </select>
+
+          </div>
+
           <table
             className="table table-striped"
           >
@@ -1513,8 +1554,13 @@ const manufacturer =
 
             <tbody>
 
-              {distributionRecords.map(
-                (record, index) => (
+              {distributionRecords
+                .filter((record) =>
+                  selectedRetailer === "All" ||
+                  record.retailerName === selectedRetailer
+                )
+                .map(
+                  (record, index) => (
 
                   <tr key={index}>
 
