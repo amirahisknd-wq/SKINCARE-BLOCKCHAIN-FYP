@@ -147,40 +147,23 @@ function ConsumerPage() {
   };
 
     const reportProduct = async () => {
-
       console.log("reportProduct called");
-
       if (
         !scannedProductId ||
         !scannedBatchNumber
       ) {
-
-        alert(
-          "Please scan a product first."
-        );
-
+        alert("Please scan a product first.");
         return;
       }
-
       if (!sellerName.trim()) {
-
         alert("Please enter the seller or shop name.");
-
         return;
-
       }
-
       if (!reportReason.trim()) {
-
-        alert(
-          "Please enter the reason for your report."
-        );
-
+        alert("Please enter the reason for your report.");
         return;
       }
-
       try {
-
     const response =
       await axios.post(
         `${process.env.REACT_APP_API_URL}/report-product`,

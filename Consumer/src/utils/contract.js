@@ -28,14 +28,10 @@ export const connectContract = async () => {
 
 export const connectReadOnlyContract =
 async () => {
-
-  const provider =
-    new ethers.JsonRpcProvider(
-      "https://eth-sepolia.g.alchemy.com/v2/y5VUjTR8FpX5bWzSVAftj"
+  const provider = new ethers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_RPC
     );
-
-  const contract =
-    new ethers.Contract(
+  const contract = new ethers.Contract(
       config.contractAddress,
       abi,
       provider
