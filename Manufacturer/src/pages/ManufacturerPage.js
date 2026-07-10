@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { connectContract } from "../utils/contract";
 import { QRCodeCanvas } from "qrcode.react";
 import {Navigate, useNavigate} from "react-router-dom";
@@ -757,6 +757,46 @@ setRetailerPassword("");
 
 };
 
+useEffect(() => {
+
+  const fetchRetailers = async () => {
+
+    try {
+
+      const contract = await connectContract();
+
+      const total =
+        await contract.getTotalRetailers();
+
+      const retailerList = [];
+
+      for (
+        let i = 0;
+        i < Number(total);
+        i++
+      ) {
+
+        const retailer =
+          await contract.getRetailerByIndex(i);
+
+        retailerList.push(retailer);
+
+      }
+
+      setRetailers(retailerList);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
+
+  fetchRetailers();
+
+}, []);
+
 const manufacturer =
   JSON.parse(
     localStorage.getItem("manufacturer")
@@ -799,6 +839,12 @@ const manufacturer =
       alert("Failed to connect wallet.");
     }
   };
+
+  const filteredDistributionRecords = distributionRecords.filter(
+      (record) =>
+        selectedRetailer === "All" ||
+        record.retailerName === selectedRetailer
+    );
 
   return (
 
@@ -1454,12 +1500,29 @@ const manufacturer =
         Retailer ID
       </label>
 
-      <input
-        className="form-control"
+      <select
+        className="form-select"
         name="retailerId"
         value={distributionData.retailerId}
         onChange={handleDistributionChange}
-      />
+      >
+
+        <option value="">
+          Select Retailer
+        </option>
+
+        {retailers.map((retailer) => (
+
+          <option
+            key={retailer[0]}
+            value={retailer[0]}
+          >
+            {retailer[0]} - {retailer[1]}
+          </option>
+
+        ))}
+
+      </select>
 
     </div>
 
@@ -1534,50 +1597,55 @@ const manufacturer =
 
           </div>
 
-          <table
-            className="table table-striped"
-          >
+          {filteredDistributionRecords.length === 0 ? (
 
-            <thead>
+            <div className="alert alert-info">
 
-              <tr>
+              {selectedRetailer === "All"
+                ? "No distribution records available."
+                : `No products have been assigned to ${selectedRetailer}.`}
 
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Batch Number</th>
-                <th>Retailer ID</th>
-                <th>Retailer Name</th>
+            </div>
 
-              </tr>
+          ) : (
 
-            </thead>
+            <table className="table table-striped">
 
-            <tbody>
+              <thead>
 
-              {distributionRecords
-                .filter((record) =>
-                  selectedRetailer === "All" ||
-                  record.retailerName === selectedRetailer
-                )
-                .map(
+                <tr>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Batch Number</th>
+                  <th>Retailer ID</th>
+                  <th>Retailer Name</th>
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {filteredDistributionRecords.map(
                   (record, index) => (
 
-                  <tr key={index}>
+                    <tr key={index}>
 
-                    <td>{record.productId}</td>
-                    <td>{record.productName}</td>
-                    <td>{record.batchNumber}</td>
-                    <td>{record.retailerId}</td>
-                    <td>{record.retailerName}</td>
+                      <td>{record.productId}</td>
+                      <td>{record.productName}</td>
+                      <td>{record.batchNumber}</td>
+                      <td>{record.retailerId}</td>
+                      <td>{record.retailerName}</td>
 
-                  </tr>
+                    </tr>
 
-                )
-              )}
+                  )
+                )}
 
-            </tbody>
+              </tbody>
 
-          </table>
+            </table>
+
+          )}
 
         </div>
 
